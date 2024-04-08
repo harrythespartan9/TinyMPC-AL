@@ -187,7 +187,7 @@ void loop() {
   int temp_size = 2 * NSTATES * (2 * NSTATES + 2 * NSTATES + 2) +
                   (NSTATES + NINPUTS) * (NSTATES + NINPUTS + 1);
   sfloat temp_data[temp_size];
-memset(temp_data, 0, sizeof(temp_data));  // temporary data, should not be changed
+  memset(temp_data, 0, sizeof(temp_data));  // temporary data, should not be changed
   
   // ===== Absolute formulation =====
   // Warm-starting since horizon data is reused
