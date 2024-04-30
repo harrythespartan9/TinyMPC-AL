@@ -11,7 +11,9 @@ void tiny_Bicycle3dGetJacobianA_Raw(double* A, const double* x, const double* u)
   A[8] = 1;
 }
 
-// CLARI AIS Kinematic model (2024/04/25)
+// CLARI AIS Kinematic model (2024/04/25) 11:10AM
+// # ==================== gait frequency = 10Hz and TinyMPC frequency = 5Hz; H = 0.2;
+// # ==================== uses the typical midpoint method
 #include <math.h>
 void tiny_CLARI3dGetJacobianA_Raw(double* A, const double* x, const double* u) {
   A[0] = 1;
@@ -22,6 +24,57 @@ void tiny_CLARI3dGetJacobianA_Raw(double* A, const double* x, const double* u) {
   A[5] = 0;
   A[6] = -0.00028500000000000004 * u[0] * sin(0.0475 * u[1] + x[2]);
   A[7] = 0.00028500000000000004 * u[0] * cos(0.0475 * u[1] + x[2]);
+  A[8] = 1;
+}
+
+// CLARI AIS Kinematic model (2024/04/30) 9:45AM
+// # ==================== gait frequency = 10Hz and TinyMPC frequency = 5Hz;
+// # ==================== H = 0.2; H_phi = 0.1; N = 2;
+// # ==================== uses the gait-averaged forward-Euler method
+#include <math.h>
+void tiny_CLARI3dGetJacobianA_Raw(double* A, const double* x, const double* u) {
+  A[0] = 1;
+  A[1] = 0;
+  A[2] = 0;
+  A[3] = 0;
+  A[4] = 1;
+  A[5] = 0;
+  A[6] = -0.00028500000000000004 * u[0] * sin(0.095 * u[1] + x[2]) + -0.00028500000000000004 * u[0] * sin(x[2]);
+  A[7] = 0.00028500000000000004 * u[0] * cos(0.095 * u[1] + x[2]) + 0.00028500000000000004 * u[0] * cos(x[2]);
+  A[8] = 1;
+}
+
+// CLARI AIS Kinematic model (2024/04/30) 10:35AM
+// # ==================== gait frequency = 10Hz and TinyMPC frequency = 5Hz;
+// # ==================== H = 0.2; H_phi = 0.1; N = 2;
+// # ==================== uses the gait-averaged midpoint method
+#include <math.h>
+void tiny_CLARI3dGetJacobianA_Raw(double* A, const double* x, const double* u) {
+  A[0] = 1;
+  A[1] = 0;
+  A[2] = 0;
+  A[3] = 0;
+  A[4] = 1;
+  A[5] = 0;
+  A[6] = -0.00028500000000000004 * u[0] * sin(0.095 * u[1] + x[2]) + -0.00028500000000000004 * u[0] * sin(0.19 * u[1] + x[2]);
+  A[7] = 0.00028500000000000004 * u[0] * cos(0.095 * u[1] + x[2]) + 0.00028500000000000004 * u[0] * cos(0.19 * u[1] + x[2]);
+  A[8] = 1;
+}
+
+// CLARI AIS Kinematic model (2024/04/30) 10:48AM
+// # ==================== gait frequency = 10Hz and TinyMPC frequency = 5Hz;
+// # ==================== H = 0.2; H_phi = 0.1; N = 2;
+// # ==================== uses the gait-averaged RK4 method
+#include <math.h>
+void tiny_CLARI3dGetJacobianA_Raw(double* A, const double* x, const double* u) {
+  A[0] = 1;
+  A[1] = 0;
+  A[2] = 0;
+  A[3] = 0;
+  A[4] = 1;
+  A[5] = 0;
+  A[6] = 0.16666666666666666 * (-0.00028500000000000004 * u[0] * sin(0.095 * u[1] + x[2]) + 4 * (-0.00028500000000000004 * u[0] * sin(0.095 * u[1] + x[2]) + -0.00028500000000000004 * u[0] * sin(0.19 * u[1] + x[2])) + -0.00028500000000000004 * u[0] * sin(0.19 * u[1] + x[2]) + -0.00028500000000000004 * u[0] * sin(x[2]) + -0.00028500000000000004 * u[0] * sin(0.28500000000000003 * u[1] + x[2]));
+  A[7] = 0.16666666666666666 * (0.00028500000000000004 * u[0] * cos(0.28500000000000003 * u[1] + x[2]) + 0.00028500000000000004 * u[0] * cos(0.095 * u[1] + x[2]) + 4 * (0.00028500000000000004 * u[0] * cos(0.095 * u[1] + x[2]) + 0.00028500000000000004 * u[0] * cos(0.19 * u[1] + x[2])) + 0.00028500000000000004 * u[0] * cos(0.19 * u[1] + x[2]) + 0.00028500000000000004 * u[0] * cos(x[2]));
   A[8] = 1;
 }
 
