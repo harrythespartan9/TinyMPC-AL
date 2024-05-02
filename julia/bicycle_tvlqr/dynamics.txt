@@ -80,3 +80,13 @@ void tiny_CLARI3dNonlinearDynamics_Raw(double* xn, const double* x, const double
   xn[3] = x[3] + 0.0475 * u[1] * x[2] + 0.0475 * u[1] * (x[2] + -0.0475 * u[1] * x[3]);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#include <math.h>
+void tiny_CLARI3dNonlinearDynamics_Raw(double* xn, const double* x, const double* u) {
+  xn[0] = x[0] + 0.00014250000000000002 * u[0] * x[2];
+  xn[1] = x[1] + 0.00014250000000000002 * u[0] * x[3];
+  xn[2] = x[2] + -0.0475 * u[1] * x[3];
+  xn[3] = x[3] + 0.0475 * u[1] * x[2];
+}
+
