@@ -238,3 +238,30 @@ void tiny_CLARI3dGetJacobianA_Raw(double* A, const double* x, const double* u) {
   A[15] = 1 + -0.0025000000000000005 * pow(0.0213 + 0.515 * u[0] + 0.458 * u[1], 2);
 }
 
+// CLARI AIS Kinematic model: SINDy, first-order polynomial TVregDiff (2024/06/01) 4:06PM
+// # ==================== gait frequency = 20Hz and TinyMPC frequency = 10Hz;
+// # ==================== H_phi = 0.05; N = 2;
+// # ==================== states: [x, y, cos(yaw), sin(yaw)]
+// # ==================== inputs: [translation_control, rotation_control]
+// # ==================== uses the gait-averaged forward-Euler method
+//////////////////// FIXED BODY VELOCITY INTEGRATION
+#include <math.h>
+void tiny_CLARI3dGetJacobianA_Raw(double* A, const double* x, const double* u) {
+  A[0] = 1;
+  A[1] = 0;
+  A[2] = 0;
+  A[3] = 0;
+  A[4] = 0;
+  A[5] = 1;
+  A[6] = 0;
+  A[7] = 0;
+  A[8] = -0.0025000000000000005 * (-0.00602 + -0.0155 * u[0] + -0.00715 * u[1]) * (0.0213 + 0.515 * u[0] + 0.458 * u[1]);
+  A[9] = 0.1 * (-0.00602 + -0.0155 * u[0] + -0.00715 * u[1]);
+  A[10] = 1 + -0.0025000000000000005 * pow(0.0213 + 0.515 * u[0] + 0.458 * u[1], 2);
+  A[11] = 0.1 * (0.0213 + 0.515 * u[0] + 0.458 * u[1]);
+  A[12] = -0.1 * (-0.00602 + -0.0155 * u[0] + -0.00715 * u[1]);
+  A[13] = -0.0025000000000000005 * (-0.00602 + -0.0155 * u[0] + -0.00715 * u[1]) * (0.0213 + 0.515 * u[0] + 0.458 * u[1]);
+  A[14] = -0.1 * (0.0213 + 0.515 * u[0] + 0.458 * u[1]);
+  A[15] = 1 + -0.0025000000000000005 * pow(0.0213 + 0.515 * u[0] + 0.458 * u[1], 2);
+}
+
