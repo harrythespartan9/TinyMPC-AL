@@ -160,3 +160,18 @@ void tiny_CLARI3dNonlinearDynamics_Raw(double* xn, const double* x, const double
   xn[3] = x[3] + 0.05 * (0.0213 + 0.515 * u[0] + 0.458 * u[1]) * x[2] + 0.05 * (0.0213 + 0.515 * u[0] + 0.458 * u[1]) * (x[2] + -0.05 * (0.0213 + 0.515 * u[0] + 0.458 * u[1]) * x[3]);
 }
 
+// CLARI AIS Kinematic model: SINDy, first-order polynomial finiteDiff (2024/06/20) 5:50PM
+// # ==================== gait frequency = 10Hz and TinyMPC frequency = 10Hz;
+// # ==================== H_phi = 0.1; N = 1;
+// # ==================== states: [x, y, yaw]
+// # ==================== inputs: [~translation_control, ~rotation_control]
+// # ==================== uses the gait-averaged forward-Euler method
+//////////////////// FIXED BODY VELOCITY INTEGRATION
+#include <math.h>
+void tiny_CLARI3dNonlinearDynamics_Raw(double* xn, const double* x, const double* u) {
+  xn[0] = x[0] + 0.1 * ((0.0263 + -0.0773 * u[0] + 0.8668 * u[1]) * x[2] + -1 * (-0.0008 + -0.013 * u[0] + -0.9974 * u[1]) * x[3]);
+  xn[1] = x[1] + 0.1 * ((-0.0008 + -0.013 * u[0] + -0.9974 * u[1]) * x[2] + (0.0263 + -0.0773 * u[0] + 0.8668 * u[1]) * x[3]);
+  xn[2] = x[2] + -0.1 * (-0.001 + 0.0437 * u[0] + -0.5123 * u[1]) * x[3];
+  xn[3] = x[3] + 0.1 * (-0.001 + 0.0437 * u[0] + -0.5123 * u[1]) * x[2];
+}
+
