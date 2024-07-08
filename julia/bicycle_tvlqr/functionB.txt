@@ -221,7 +221,6 @@ void tiny_CLARI3dGetJacobianB_Raw(double* B, const double* x, const double* u) {
 // # ==================== states: [x, y, yaw]
 // # ==================== inputs: [~translation_control, ~rotation_control]
 // # ==================== uses the gait-averaged forward-Euler method
-//////////////////// FIXED BODY VELOCITY INTEGRATION
 #include <math.h>
 void tiny_CLARI3dGetJacobianB_Raw(double* B, const double* x, const double* u) {
   B[0] = 0.1 * (-0.0773 * x[2] + 0.013 * x[3]);
@@ -232,9 +231,21 @@ void tiny_CLARI3dGetJacobianB_Raw(double* B, const double* x, const double* u) {
   B[5] = 0.1 * (-0.9974 * x[2] + 0.8668 * x[3]);
   B[6] = 0.05123 * x[3];
   B[7] = -0.05123 * x[2];
-  B[8] = 0;
-  B[9] = 0;
-  B[10] = 0;
-  B[11] = 0;
+}
+
+// CLARI AIS Kinematic model: SINDy, first-order polynomial finiteDiff (2024/07/06) 2:53PM
+// # ==================== gait frequency = 10Hz and TinyMPC frequency = 10Hz;
+// # ==================== H_phi = 0.1; N = 1;
+// # ==================== states: [x, y, yaw]
+// # ==================== inputs: [~translation_control, ~rotation_control]
+// # ==================== uses the gait-averaged forward-Euler method
+#include <math.h>
+void tiny_CLARI3dGetJacobianB_Raw(double* B, const double* x, const double* u) {
+  B[0] = 0.1 * (0.013 * sin(x[2]) + -0.0773 * cos(x[2]));
+  B[1] = 0.1 * (-0.0773 * sin(x[2]) + -0.013 * cos(x[2]));
+  B[2] = 0.004370000000000001;
+  B[3] = 0.1 * (0.9974 * sin(x[2]) + 0.8668 * cos(x[2]));
+  B[4] = 0.1 * (0.8668 * sin(x[2]) + -0.9974 * cos(x[2]));
+  B[5] = -0.05123;
 }
 
