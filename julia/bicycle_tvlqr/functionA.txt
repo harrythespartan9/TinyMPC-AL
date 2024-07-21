@@ -296,7 +296,8 @@ void tiny_CLARI3dGetJacobianA_Raw(double* A, const double* x, const double* u) {
 // # ==================== H_phi = 0.1; N = 1;
 // # ==================== states: [x, y, yaw]
 // # ==================== inputs: [~translation_control, ~rotation_control]
-// # ==================== uses the gait-averaged forward-Euler method#include <math.h>
+// # ==================== uses the gait-averaged forward-Euler method
+#include <math.h>
 void tiny_CLARI3dGetJacobianA_Raw(double* A, const double* x, const double* u) {
   A[0] = 1;
   A[1] = 0;
@@ -306,6 +307,25 @@ void tiny_CLARI3dGetJacobianA_Raw(double* A, const double* x, const double* u) {
   A[5] = 0;
   A[6] = 0.1 * (-1 * (0.0263 + -0.0773 * u[0] + 0.8668 * u[1]) * sin(x[2]) + (0.0008 + 0.013 * u[0] + 0.9974 * u[1]) * cos(x[2]));
   A[7] = 0.1 * (-1 * (-0.0008 + -0.013 * u[0] + -0.9974 * u[1]) * sin(x[2]) + (0.0263 + -0.0773 * u[0] + 0.8668 * u[1]) * cos(x[2]));
+  A[8] = 1;
+}
+
+// CLARI AIS Kinematic model: SINDy, first-order polynomial finiteDiff (2024/07/21) 12:29PM
+// # ==================== gait frequency = 10Hz and TinyMPC frequency = 10Hz;
+// # ==================== H_phi = 0.1; N = 1;
+// # ==================== states: [x, y, yaw]
+// # ==================== inputs: swing and lift amplitudes and offsets (16 inputs)
+// # ==================== uses the gait-averaged forward-Euler method
+#include <math.h>
+void tiny_CLARI3dGetJacobianA_Raw(double* A, const double* x, const double* u) {
+  A[0] = 1;
+  A[1] = 0;
+  A[2] = 0;
+  A[3] = 0;
+  A[4] = 1;
+  A[5] = 0;
+  A[6] = 0.1 * (-1 * (0.00538 + -0.003872 * u[0] + 0.01044 * u[9] + -0.01735 * u[10] + -0.007047 * u[11] + 4.002e-5 * u[12] + 0.005165 * u[13] + -0.001332 * u[14] + -0.00485 * u[15] + 0.003618 * u[1] + 0.007932 * u[2] + 0.002661 * u[3] + 0.004506 * u[4] + -0.003487 * u[5] + 0.006692 * u[6] + 0.002624 * u[7] + -0.01506 * u[8]) * sin(x[2]) + (0.000519 + -0.001384 * u[0] + 8.014e-5 * u[9] + 0.001685 * u[10] + 0.0003461 * u[11] + 0.000237 * u[12] + -0.0001387 * u[13] + 0.0002612 * u[14] + -0.0007736 * u[15] + 0.0001855 * u[1] + -2.221e-6 * u[2] + -0.0004202 * u[3] + -0.0007788 * u[4] + -0.0002786 * u[5] + -3.928e-5 * u[6] + -0.0004973 * u[7] + 0.001249 * u[8]) * cos(x[2]));
+  A[7] = 0.1 * (-1 * (-0.000519 + 0.001384 * u[0] + -8.014e-5 * u[9] + -0.001685 * u[10] + -0.0003461 * u[11] + -0.000237 * u[12] + 0.0001387 * u[13] + -0.0002612 * u[14] + 0.0007736 * u[15] + -0.0001855 * u[1] + 2.221e-6 * u[2] + 0.0004202 * u[3] + 0.0007788 * u[4] + 0.0002786 * u[5] + 3.928e-5 * u[6] + 0.0004973 * u[7] + -0.001249 * u[8]) * sin(x[2]) + (0.00538 + -0.003872 * u[0] + 0.01044 * u[9] + -0.01735 * u[10] + -0.007047 * u[11] + 4.002e-5 * u[12] + 0.005165 * u[13] + -0.001332 * u[14] + -0.00485 * u[15] + 0.003618 * u[1] + 0.007932 * u[2] + 0.002661 * u[3] + 0.004506 * u[4] + -0.003487 * u[5] + 0.006692 * u[6] + 0.002624 * u[7] + -0.01506 * u[8]) * cos(x[2]));
   A[8] = 1;
 }
 
