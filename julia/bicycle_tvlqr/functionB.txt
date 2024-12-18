@@ -307,3 +307,25 @@ void tiny_CLARI3dGetJacobianB_Raw(double* B, const double* x, const double* u) {
   B[47] = 0.05795;
 }
 
+// HAMRV6 Kinematic model: SINDy, first-order polynomial centralAdaptivefiniteDiff (2024/12/17) 6:18PM
+// # ==================== gait frequency = 5Hz and TinyMPC frequency = 5Hz;
+// # ==================== H_phi = 0.2; N = 1;
+// # ==================== states: [x, y, cos(yaw), sin(yaw)] # planar location and a phasor for orientation
+// # ==================== inputs: 3 inputs: 2 from the experimental maneurverability model paper and 1 for amplitude change
+// # ==================== uses the gait-averaged forward-Euler method
+#include <math.h>
+void tiny_HAMRv6GetJacobianB_Raw(double* B, const double* x, const double* u) {
+  B[0] = 0.2 * (0.01537 * x[2] + -0.03835 * x[3]);
+  B[1] = 0.2 * (0.03835 * x[2] + 0.01537 * x[3]);
+  B[2] = -0.03128 * x[3];
+  B[3] = 0.03128 * x[2];
+  B[4] = 0.2 * (0.002067 * x[2] + -0.01061 * x[3]);
+  B[5] = 0.2 * (0.01061 * x[2] + 0.002067 * x[3]);
+  B[6] = -0.018364000000000002 * x[3];
+  B[7] = 0.018364000000000002 * x[2];
+  B[8] = 0.2 * (0.0006823 * x[2] + -0.005287 * x[3]);
+  B[9] = 0.2 * (0.005287 * x[2] + 0.0006823 * x[3]);
+  B[10] = -0.012458 * x[3];
+  B[11] = 0.012458 * x[2];
+}
+
