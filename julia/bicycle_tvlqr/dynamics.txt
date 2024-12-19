@@ -213,3 +213,17 @@ void tiny_HAMRv6NonlinearDynamics_Raw(double* xn, const double* x, const double*
   xn[3] = x[3] + 0.2 * (0.1564 * u[0] + 0.09182 * u[1] + 0.06229 * u[2]) * x[2];
 }
 
+// HAMRV6 Kinematic model: SINDy, first-order polynomial centralAdaptivefiniteDiff (2024/12/18) 5:43PM
+// # ==================== gait frequency = 5Hz and TinyMPC frequency = 2.5Hz;
+// # ==================== H_phi = 0.2; N = 2;
+// # ==================== states: [x, y, cos(yaw), sin(yaw)] # planar location and a phasor for orientation
+// # ==================== inputs: 3 inputs: 2 from the experimental maneurverability model paper and 1 for amplitude change
+// # ==================== uses the gait-averaged forward-Euler method
+#include <math.h>
+void tiny_HAMRv6NonlinearDynamics_Raw(double* xn, const double* x, const double* u) {
+  xn[0] = x[0] + 0.2 * ((0.01537 * u[0] + 0.002067 * u[1] + 0.0006823 * u[2]) * x[2] + -1 * (0.03835 * u[0] + 0.01061 * u[1] + 0.005287 * u[2]) * x[3]) + 0.2 * (-1 * (0.03835 * u[0] + 0.01061 * u[1] + 0.005287 * u[2]) * (x[3] + 0.2 * (0.1564 * u[0] + 0.09182 * u[1] + 0.06229 * u[2]) * x[2]) + (0.01537 * u[0] + 0.002067 * u[1] + 0.0006823 * u[2]) * (x[2] + -0.2 * (0.1564 * u[0] + 0.09182 * u[1] + 0.06229 * u[2]) * x[3]));
+  xn[1] = x[1] + 0.2 * ((0.03835 * u[0] + 0.01061 * u[1] + 0.005287 * u[2]) * x[2] + (0.01537 * u[0] + 0.002067 * u[1] + 0.0006823 * u[2]) * x[3]) + 0.2 * ((0.01537 * u[0] + 0.002067 * u[1] + 0.0006823 * u[2]) * (x[3] + 0.2 * (0.1564 * u[0] + 0.09182 * u[1] + 0.06229 * u[2]) * x[2]) + (0.03835 * u[0] + 0.01061 * u[1] + 0.005287 * u[2]) * (x[2] + -0.2 * (0.1564 * u[0] + 0.09182 * u[1] + 0.06229 * u[2]) * x[3]));
+  xn[2] = x[2] + -0.2 * (0.1564 * u[0] + 0.09182 * u[1] + 0.06229 * u[2]) * x[3] + 0.2 * (0.1564 * u[0] + 0.09182 * u[1] + 0.06229 * u[2]) * (-1 * x[3] + -0.2 * (0.1564 * u[0] + 0.09182 * u[1] + 0.06229 * u[2]) * x[2]);
+  xn[3] = x[3] + 0.2 * (0.1564 * u[0] + 0.09182 * u[1] + 0.06229 * u[2]) * x[2] + 0.2 * (0.1564 * u[0] + 0.09182 * u[1] + 0.06229 * u[2]) * (x[2] + -0.2 * (0.1564 * u[0] + 0.09182 * u[1] + 0.06229 * u[2]) * x[3]);
+}
+
